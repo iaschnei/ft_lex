@@ -26,8 +26,8 @@ private:
     bool defined_t;
     bool defined_v;
 
-    bool    check_syntax(char *arg);
-    bool    extract_options(char *arg);
+    bool    check_syntax(const char *arg);
+    bool    extract_options(const char *arg);
 
 };
 

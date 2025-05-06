@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <string>
 
+
 ArgParser::ArgParser(int argc, char **argv) {
 
     this->option_n = 1;
@@ -20,7 +21,7 @@ ArgParser::ArgParser(int argc, char **argv) {
         throw std::invalid_argument("Error : too many arguments");
     }
 
-    for (int i = 1; i < 4; i ++) {
+    for (int i = 1; i < argc; i ++) {
         if (!this->check_syntax(argv[i])) {
             throw std::invalid_argument("Error : invalid option");
         }
@@ -50,7 +51,7 @@ int ArgParser::getProgramOutputLocation(void) {
 // This can be stderr, stdout or none
 int ArgParser::getStatsOutputLocation(void) {
 
-    if (option_n == 1) {
+    if (option_n == 1 && defined_n == 1) {
         return (NONE);
     }
 
@@ -58,11 +59,16 @@ int ArgParser::getStatsOutputLocation(void) {
         return (STDERR);
     }
 
-    return (STDOUT);
+    if (option_v == 1) {
+        return (STDOUT);
+    }
+
+    return (NONE);
 }
 
 
-bool ArgParser::check_syntax(char *arg) {
+bool ArgParser::check_syntax(const char *arg) {
+    
     std::string str_arg (arg);
 
     size_t arg_len = str_arg.length();
@@ -75,7 +81,7 @@ bool ArgParser::check_syntax(char *arg) {
         return (false);
     }
 
-    for (int i = 1; i < arg_len; i++) {
+    for (size_t i = 1; i < arg_len; i++) {
         if (str_arg[i] != 't' && str_arg[i] != 'n' && str_arg[i] != 'v') {
             return (false);
         }
@@ -84,13 +90,13 @@ bool ArgParser::check_syntax(char *arg) {
     return (true);
 }
 
-bool ArgParser::extract_options(char *arg) {
+bool ArgParser::extract_options(const char *arg) {
 
     std::string str_arg (arg);
 
     size_t arg_len = str_arg.length();
 
-    for (int i = 1; i < arg_len; i ++) {
+    for (size_t i = 1; i < arg_len; i ++) {
 
         if (str_arg[i] == 'n') {
             if (this->defined_n == 1) {
