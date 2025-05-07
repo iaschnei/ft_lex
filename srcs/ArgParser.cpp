@@ -17,16 +17,14 @@ ArgParser::ArgParser(int argc, char **argv) {
         return ;
     }
 
-    if (argc > 4) {
-        throw std::invalid_argument("Error : too many arguments");
-    }
-
     for (int i = 1; i < argc; i ++) {
-        if (!this->check_syntax(argv[i])) {
-            throw std::invalid_argument("Error : invalid option");
-        }
-        if (!this->extract_options(argv[i])) {
-            throw std::invalid_argument("Error : option already defined");
+        if (argv[i][0] && argv[i][0] == '-') {
+            if (!this->check_syntax(argv[i])) {
+                throw std::invalid_argument("Error : invalid option");
+            }
+            if (!this->extract_options(argv[i])) {
+                throw std::invalid_argument("Error : option already defined");
+            }
         }
     }
 
