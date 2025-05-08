@@ -1,5 +1,6 @@
 #include <iostream>
 #include "../include/ArgParser.hpp"
+#include "../include/FileParser.hpp"
 #include "../include/colors.hpp"
 
 int main(int ac, char **av) {
@@ -16,6 +17,12 @@ int main(int ac, char **av) {
     }
 
     std::cout << "Printing program in " << program_output << std::endl;
+
+    FileParser file_parser(ac, av);
+
+    std::cout << "Part 1 :\n" << file_parser.GetFullPartOne() << std::endl;
+    std::cout << "Part 2 :\n" << file_parser.GetFullPartTwo() << std::endl;
+    std::cout << "Part 3 :\n" << file_parser.GetFullPartThree() << std::endl; 
 
     }
     catch (const std::exception& e) {

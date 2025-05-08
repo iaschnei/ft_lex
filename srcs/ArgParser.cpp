@@ -9,21 +9,43 @@ ArgParser::ArgParser(int argc, char **argv) {
     this->option_v = 0;
     this->option_t = 0;
 
+    this->stdin_input = 0;
+
     this->defined_n = 0;
     this->defined_t = 0;
     this->defined_v = 0;
 
     if (argc < 2) {
+        this->stdin_input = 1;
         return ;
     }
 
     for (int i = 1; i < argc; i ++) {
-        if (argv[i][0] && argv[i][0] == '-') {
+
+        if (argv[i][0] && argv[i][0] == '-' && !argv[i][1]) {
+            this->stdin_input = 1;
+        }
+
+        if (argv[i][0] && argv[i][0] == '-' && argv[i][1]) {
             if (!this->check_syntax(argv[i])) {
                 throw std::invalid_argument("Error : invalid option");
             }
             if (!this->extract_options(argv[i])) {
                 throw std::invalid_argument("Error : option already defined");
+            }
+        }
+    }
+
+    // Check for no filename, in which case we use stdin
+    if (this->stdin_input != 1) {
+
+        this->stdin_input = 1;
+
+        for (int i = 1; i < argc; i++) {
+
+            if (argv[i][0] && argv[i][0] != '-') {
+                this->stdin_input = 0;
+                break;
             }
         }
     }
@@ -62,6 +84,10 @@ int ArgParser::getStatsOutputLocation(void) {
     }
 
     return (NONE);
+}
+
+int ArgParser::getStdinInputStatus() {
+    return (this->stdin_input);
 }
 
 

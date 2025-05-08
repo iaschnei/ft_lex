@@ -16,15 +16,19 @@ public:
     int getProgramOutputLocation();
     int getStatsOutputLocation();
 
+    int getStdinInputStatus();
+
 private:
 
-    bool option_n;
-    bool option_t;
-    bool option_v;
+    int option_n;
+    int option_t;
+    int option_v;
 
-    bool defined_n;
-    bool defined_t;
-    bool defined_v;
+    int stdin_input;
+
+    int defined_n;
+    int defined_t;
+    int defined_v;
 
     bool    check_syntax(const char *arg);
     bool    extract_options(const char *arg);
